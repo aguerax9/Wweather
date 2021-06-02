@@ -27,7 +27,6 @@ export default class CurrentWeatherItem extends React.Component {
                 </View>
                 <View style={styles.info_container}>
                     <Text style={styles.main_temp}>{Math.round(weatherData.current.temp)}°</Text>
-                    <Text style={styles.max_min_temp}>Max: {Math.round(weatherData.daily[0].temp.max)}° Min: {Math.round(weatherData.daily[0].temp.min)}°</Text>
                 </View>
             </View>
         );
@@ -36,12 +35,13 @@ export default class CurrentWeatherItem extends React.Component {
 
 const styles = StyleSheet.create({
     main_container: {
-        height: 190,
-        // backgroundColor: 'lightgrey',
-        // marginBottom: 20,
-        // borderRadius: 3,
-        borderTopWidth: 3,
+        height: 150,
+        marginHorizontal: 5,
         borderBottomWidth: 3,
+        marginBottom: 3,
+        backgroundColor: '#6A7A87',
+        borderRadius: 3,
+
     },
     icon: {
         height: 90,
@@ -50,25 +50,26 @@ const styles = StyleSheet.create({
         right: 0,
     },
     header_container: {
-        flex: 2,
+        flex: 1,
     },
     city_name_text: {
         textAlign: 'center',
         fontSize: 30,
+        color: 'white',
+        fontWeight: 'bold',
     },
     description_text: {
         textAlign: 'center',
-        fontSize: 16,
+        fontSize: 18,
+        color: 'white',
+        fontStyle: 'italic',
     },
     info_container: {
-        flex: 3,
+        flex: 1,
     },
     main_temp: {
         textAlign: 'center',
-        fontSize: 50,
+        fontSize: 65,
+        color: 'white',
     },
-    max_min_temp: {
-        textAlign: 'center',
-        fontSize: 16,
-    }
 });

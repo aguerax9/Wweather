@@ -57,7 +57,7 @@ class Search extends React.Component {
     if (this.state.isLoading) {
         return(
             <View style={styles.loading}>
-                <ActivityIndicator size='large' />
+                <ActivityIndicator size='large' color='black' />
             </View>
         );       
     }
@@ -92,6 +92,7 @@ class Search extends React.Component {
         <TextInput 
           style={styles.input} 
           placeholder="Country or city name ..."
+          placeholderTextColor='black'
           fontSize={20}
           onChangeText={(text) => this._textInputChanged(text)}
           onSubmitEditing={() => this._loadWeatherData()} />
@@ -111,15 +112,15 @@ class Search extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
-    marginVertical: 40,
-    marginHorizontal: 5,
+    backgroundColor: '#B1CCE1',
   },
   input: {
     height: 40,
-    borderWidth: 1,
-    borderColor: '#000000',
+    borderWidth: 2,
     borderRadius: 3,
     padding: 5,
+    marginHorizontal: 5,
+    marginTop: 50,
   },
   button: {
     marginVertical: 10,
@@ -127,6 +128,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderColor: '#198CE7',
     backgroundColor: '#198CE7',
+    marginHorizontal: 5,
   },
   loading: {
     position: 'absolute',
@@ -139,13 +141,16 @@ const styles = StyleSheet.create({
   },
   error_container: {
     height: 40,
-    backgroundColor: 'lightgray',
+    // backgroundColor: '#E82542',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
+    marginHorizontal: 5,
   },
   error_text: {
     fontSize: 20,
+    fontWeight: 'bold',
+    color: '#E82542',
   }
 });
 

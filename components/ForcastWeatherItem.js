@@ -12,7 +12,8 @@ export default class ForcastWeatherItem extends React.Component {
         return(
             <View style={styles.main_container}>
                 <View style={styles.day_container}>
-                    <Text style={styles.day_text}>{moment(weatherData.dt*1000).format('dddd')}</Text>
+                    <Text style={styles.day_text}>{moment(weatherData.dt*1000).format('ddd').toUpperCase()}.</Text>
+                    <Text style={styles.day_text}>{moment(weatherData.dt*1000).format('DD/MM')}</Text>
                 </View>
                 <View style={styles.icon_container}>
                     <Image style={styles.icon}
@@ -23,8 +24,8 @@ export default class ForcastWeatherItem extends React.Component {
                         )}} />
                 </View>
                 <View style={styles.temp_container}>
-                    <Text style={styles.temp_text}>{Math.round(weatherData.temp.max)}</Text>
-                    <Text style={[styles.temp_text, {color: 'lightgray'}]}>{Math.round(weatherData.temp.min)}</Text>
+                    <Text style={[styles.temp_text, {color: 'white'}]}>{Math.round(weatherData.temp.max)}</Text>
+                    <Text style={styles.temp_text}>{Math.round(weatherData.temp.min)}</Text>
                 </View>
             </View>
         );
@@ -33,20 +34,23 @@ export default class ForcastWeatherItem extends React.Component {
 
 const styles = StyleSheet.create({
     main_container: {
+        marginHorizontal: 5,
         height: 40,
         paddingLeft: 10,
         marginVertical: 2,
         flexDirection: 'row',
-        // backgroundColor: 'lightgray',
-        // borderRadius: 3,
-        borderBottomWidth: 1,
+        backgroundColor: '#6A7A87',
+        borderRadius: 3,
     },
     day_container: {
         flex: 3,
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
     },
     day_text: {
         fontSize: 18,
+        color: 'white',
+        fontWeight: 'bold',
     },
     icon_container: {
         flex: 2,
