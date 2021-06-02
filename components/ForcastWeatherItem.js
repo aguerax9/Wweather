@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
         flex: 3,
         flexDirection: 'row',
         justifyContent: 'space-around',
+        alignItems: 'center',
     },
     day_text: {
         fontSize: 18,
