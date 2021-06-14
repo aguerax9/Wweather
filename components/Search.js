@@ -1,7 +1,7 @@
 import React from 'react';
-import { ActivityIndicator, Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import CurrentWeatherItem from './CurrentWeatherItem';
+import CurrentWeather from './CurrentWeather';
 import ForcastWeatherItem from './ForcastWeatherItem';
 
 import { getCurrentWeather, get7DaysForcast } from '../api/OpenWeatherApi';
@@ -12,9 +12,8 @@ class Search extends React.Component {
     super(props);
     this.searchText = "";
     this.state = {
-      weatherData: undefined,
-      cod: "",
-      cityName: "",
+      currentWeather: undefined,
+      forcastWeather: [],
       isLoading: false,
     };
   }
@@ -23,66 +22,44 @@ class Search extends React.Component {
     this.searchText = text;
   }
 
+  _load7DaysForcastWeatherData() {
+    get7DaysForcast(this.state.currentWeather.coord.lat, this.state.currentWeather.coord.lon)
+      .then(data => {
+        this.setState({
+          forcastWeather: data,
+        });
+      });
+  }
+
   _loadWeatherData() {
     if (this.searchText.length > 0) {
+      this.setState({isLoading: true});
       getCurrentWeather(this.searchText).then(data => {
         this.setState({
-          cod: data.cod,
+          currentWeather: data,
+          isLoading: false,
+        }, () => {
+          this._load7DaysForcastWeatherData();
         });
-        if (this.state.cod == "200") {
-          this.setState({
-            isLoading: true,
-            cityName: data.name,
-          });
-          get7DaysForcast(data.coord.lat, data.coord.lon).then(ddata => {
-            this.setState({
-              weatherData: ddata,
-              isLoading: false,
-            });
-          });
-        }
       });
     }
   }
 
-  _displayCurrentWeatherData() {
-    if (this.state.weatherData != undefined) {
+  _displayWeatherData() {
+    if (this.state.currentWeather !== undefined) {
       return(
-        <CurrentWeatherItem cityName = {this.state.cityName} data={this.state.weatherData} />
-      );
+        <CurrentWeather data={this.state.currentWeather} />
+      ); 
     }
   }
 
   _displayLoading() {
     if (this.state.isLoading) {
         return(
-            <View style={styles.loading}>
-                <ActivityIndicator size='large' color='black' />
+            <View style={styles.loading_container}>
+                <ActivityIndicator size='large' />
             </View>
-        );       
-    }
-  }
-
-  _displayWeatherData() {
-    if (this.state.weatherData != undefined && this.state.cod == "200") {
-      return(
-        <View style={{flex: 1}}>
-          <View>
-            <CurrentWeatherItem cityName={this.state.cityName} data={this.state.weatherData} />
-          </View>
-          <FlatList 
-            data={this.state.weatherData.daily}
-            keyExtractor={(item) => item.dt}
-            renderItem={({item}) => <ForcastWeatherItem data={item} />}
-          />
-        </View>
-      );
-    } else if (this.state.cod == "404") {
-      return(
-        <View style={styles.error_container}>
-          <Text style={styles.error_text}>Location not found, try again.</Text>
-        </View>
-      );
+        );
     }
   }
 
@@ -92,15 +69,16 @@ class Search extends React.Component {
         <TextInput 
           style={styles.input} 
           placeholder="Country or city name ..."
-          placeholderTextColor='black'
-          fontSize={20}
+          fontSize={18}
           onChangeText={(text) => this._textInputChanged(text)}
-          onSubmitEditing={() => this._loadWeatherData()} />
+          onSubmitEditing={() => this._loadWeatherData()} 
+        />
         <View style={styles.button}>
           <Button
             title="Search"
             color='white'
-            onPress={() => this._loadWeatherData()} />
+            onPress={() => this._loadWeatherData()} 
+          />
         </View>
         {this._displayWeatherData()}
         {this._displayLoading()}
@@ -112,11 +90,11 @@ class Search extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
-    backgroundColor: '#B1CCE1',
+    // backgroundColor: '#B1CCE1',
   },
   input: {
     height: 40,
-    borderWidth: 2,
+    borderWidth: 1.5,
     borderRadius: 3,
     padding: 5,
     marginHorizontal: 5,

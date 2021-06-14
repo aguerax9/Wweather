@@ -8,7 +8,7 @@ export function getCurrentWeather(location) {
 }
 
 export function get7DaysForcast(lat, lon) {
-    const url = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+lon+"&exclude=minutely,hourly&appid="+API_KEY+"&units=metric";
+    const url = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+lon+"&exclude=current,minutely,hourly&appid="+API_KEY+"&units=metric";
     return fetch(url)
         .then(response => response.json())
         .catch(error => console.error(error));
