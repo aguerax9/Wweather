@@ -54,17 +54,16 @@ class Search extends React.Component {
 
   _displayWeatherData() {
     if (this.state.currentWeather !== undefined) {
-      // console.log(this.state.forcastWeather);
       return(
         <View>
           <CurrentWeather data={this.state.currentWeather} />
           <FlatList 
             data={this.state.forcastWeather}
             keyExtractor={(item) => item.dt}
-            renderItem={({item}) => <ForcastWeatherItem data={item} />}
+            renderItem={({item}) => <ForcastWeatherItem data={item} displayForcastDetails={this._displayForcastDetails} />}
             // scrollEnabled={false}
           />
-          <ScrollView>
+          <ScrollView style={{height: 170}}>
             <View style={[styles.current_info_container, {borderTopWidth: 1}]}>
               <View>
                 <Text style={{fontSize: 20}}>Max</Text>
@@ -111,6 +110,11 @@ class Search extends React.Component {
     }
   }
 
+  _displayForcastDetails = (data) => {
+    // console.log(this.state.currentWeather.name);
+    this.props.navigation.navigate('Infos', {weatherData: data});
+  }
+
   render() {
     return(
       <View style={styles.main_container}>
@@ -146,7 +150,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     padding: 5,
     marginHorizontal: 5,
-    marginTop: 50,
+    // marginTop: 50,
   },
   button: {
     marginVertical: 10,

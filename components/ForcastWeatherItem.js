@@ -6,10 +6,9 @@ import { getIcon } from '../api/OpenWeatherApi'
 
 export default class ForcastWeatherItem extends React.Component {
     render() {
-        // console.log(this.props.data);
         const weatherData = this.props.data;
         return(
-            <TouchableOpacity style={styles.main_container} onPress={() => console.log(weatherData)}>
+            <TouchableOpacity style={styles.main_container} onPress={() => this.props.displayForcastDetails(weatherData)}>
                 <View style={styles.day_container}>
                     <Text style={styles.day_text}>{moment(weatherData.dt*1000).format('ddd').toUpperCase()}.</Text>
                     <Text style={styles.day_text}>{moment(weatherData.dt*1000).format('DD/MM')}</Text>
