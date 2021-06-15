@@ -26,7 +26,11 @@ class Search extends React.Component {
     get7DaysForcast(this.state.currentWeather.coord.lat, this.state.currentWeather.coord.lon)
       .then(data => {
         this.setState({
-          forcastWeather: data,
+          forcastWeather: data.daily,
+        }, () => {
+          this.setState({
+            forcastWeather: this.state.forcastWeather.filter((item, index) => index !== 0),
+          });
         });
       });
   }
@@ -47,11 +51,12 @@ class Search extends React.Component {
 
   _displayWeatherData() {
     if (this.state.currentWeather !== undefined) {
+      // console.log(this.state.forcastWeather);
       return(
         <View>
           <CurrentWeather data={this.state.currentWeather} />
           <FlatList 
-            data={this.state.forcastWeather.daily}
+            data={this.state.forcastWeather}
             keyExtractor={(item) => item.dt}
             renderItem={({item}) => <ForcastWeatherItem data={item} />}
           />
