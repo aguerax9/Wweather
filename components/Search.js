@@ -6,6 +6,8 @@ import ForcastWeatherItem from './ForcastWeatherItem';
 
 import { getCurrentWeather, get7DaysForcast } from '../api/OpenWeatherApi';
 
+import moment from 'moment';
+
 class Search extends React.Component {
 
   constructor(props) {
@@ -28,6 +30,7 @@ class Search extends React.Component {
         this.setState({
           forcastWeather: data.daily,
         }, () => {
+          // permet de retirer les donnees d aujourd hui de la liste des previsions
           this.setState({
             forcastWeather: this.state.forcastWeather.filter((item, index) => index !== 0),
           });
@@ -59,7 +62,40 @@ class Search extends React.Component {
             data={this.state.forcastWeather}
             keyExtractor={(item) => item.dt}
             renderItem={({item}) => <ForcastWeatherItem data={item} />}
+            // scrollEnabled={false}
           />
+          <ScrollView>
+            <View style={[styles.current_info_container, {borderTopWidth: 1}]}>
+              <View>
+                <Text style={{fontSize: 20}}>Max</Text>
+                <Text style={{fontSize: 30}}>{Math.round(this.state.currentWeather.main.temp_max)}°</Text>
+              </View>
+              <View>
+                <Text style={{fontSize: 20}}>Min</Text>
+                <Text style={{fontSize: 30}}>{Math.round(this.state.currentWeather.main.temp_min)}°</Text>
+              </View>
+            </View>
+            <View style={styles.current_info_container}>
+              <View>
+                <Text style={{fontSize: 20}}>Sunrise</Text>
+                <Text style={{fontSize: 30}}>{moment(this.state.currentWeather.sys.sunrise*1000).format('LT')}</Text>
+              </View>
+              <View>
+                <Text style={{fontSize: 20}}>Sunset</Text>
+                <Text style={{fontSize: 30}}>{moment(this.state.currentWeather.sys.sunset*1000).format('LT')}</Text>
+              </View>
+            </View>
+            <View style={styles.current_info_container}>
+              <View>
+                <Text style={{fontSize: 20}}>Humidity</Text>
+                <Text style={{fontSize: 30}}>{this.state.currentWeather.main.humidity} %</Text>
+              </View>
+              <View>
+                <Text style={{fontSize: 20}}>Pressure</Text>
+                <Text style={{fontSize: 30}}>{this.state.currentWeather.main.pressure} hPa</Text>
+              </View>
+            </View>
+          </ScrollView>
         </View>
       );
     }
@@ -141,6 +177,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#E82542',
+  },
+  current_info_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
+    borderBottomWidth: 1,
+    borderColor: '#6A7A87',
   }
 });
 
