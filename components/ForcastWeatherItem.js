@@ -1,16 +1,14 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 
 import { getIcon } from '../api/OpenWeatherApi'
 
 export default class ForcastWeatherItem extends React.Component {
-
-
     render() {
         const weatherData = this.props.data;
         return(
-            <View style={styles.main_container}>
+            <TouchableOpacity style={styles.main_container}>
                 <View style={styles.day_container}>
                     <Text style={styles.day_text}>{moment(weatherData.dt*1000).format('ddd').toUpperCase()}.</Text>
                     <Text style={styles.day_text}>{moment(weatherData.dt*1000).format('DD/MM')}</Text>
@@ -21,13 +19,14 @@ export default class ForcastWeatherItem extends React.Component {
                             weatherData.weather.map(weather => {
                                 return weather.icon;
                             })
-                        )}} />
+                        )}}
+                    />
                 </View>
                 <View style={styles.temp_container}>
                     <Text style={[styles.temp_text, {color: 'white'}]}>{Math.round(weatherData.temp.max)}</Text>
                     <Text style={styles.temp_text}>{Math.round(weatherData.temp.min)}</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 }

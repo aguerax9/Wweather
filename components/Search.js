@@ -48,15 +48,22 @@ class Search extends React.Component {
   _displayWeatherData() {
     if (this.state.currentWeather !== undefined) {
       return(
-        <CurrentWeather data={this.state.currentWeather} />
-      ); 
+        <View>
+          <CurrentWeather data={this.state.currentWeather} />
+          <FlatList 
+            data={this.state.forcastWeather.daily}
+            keyExtractor={(item) => item.dt}
+            renderItem={({item}) => <ForcastWeatherItem data={item} />}
+          />
+        </View>
+      );
     }
   }
 
   _displayLoading() {
     if (this.state.isLoading) {
         return(
-            <View style={styles.loading_container}>
+            <View style={styles.loading}>
                 <ActivityIndicator size='large' />
             </View>
         );
