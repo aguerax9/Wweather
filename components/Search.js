@@ -65,31 +65,31 @@ class Search extends React.Component {
           />
           <ScrollView style={{height: 170}}>
             <View style={[styles.current_info_container, {borderTopWidth: 1}]}>
-              <View>
+              <View style={{flex: 2}}>
                 <Text style={{fontSize: 20}}>Max</Text>
                 <Text style={{fontSize: 30}}>{Math.round(this.state.currentWeather.main.temp_max)}°</Text>
               </View>
-              <View>
+              <View style={{flex: 2}}>
                 <Text style={{fontSize: 20}}>Min</Text>
                 <Text style={{fontSize: 30}}>{Math.round(this.state.currentWeather.main.temp_min)}°</Text>
               </View>
             </View>
             <View style={styles.current_info_container}>
-              <View>
+              <View style={{flex: 2}}>
                 <Text style={{fontSize: 20}}>Sunrise</Text>
                 <Text style={{fontSize: 30}}>{moment(this.state.currentWeather.sys.sunrise*1000).format('LT')}</Text>
               </View>
-              <View>
+              <View style={{flex: 2}}>
                 <Text style={{fontSize: 20}}>Sunset</Text>
                 <Text style={{fontSize: 30}}>{moment(this.state.currentWeather.sys.sunset*1000).format('LT')}</Text>
               </View>
             </View>
             <View style={styles.current_info_container}>
-              <View>
+              <View style={{flex: 2}}>
                 <Text style={{fontSize: 20}}>Humidity</Text>
                 <Text style={{fontSize: 30}}>{this.state.currentWeather.main.humidity} %</Text>
               </View>
-              <View>
+              <View style={{flex: 2}}>
                 <Text style={{fontSize: 20}}>Pressure</Text>
                 <Text style={{fontSize: 30}}>{this.state.currentWeather.main.pressure} hPa</Text>
               </View>
@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
   main_container: {
     flex: 1,
     // backgroundColor: '#B1CCE1',
+    marginBottom: 10,
   },
   input: {
     height: 40,
@@ -188,6 +189,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderBottomWidth: 1,
     borderColor: '#6A7A87',
+    paddingLeft: 5,
   }
 });
 
