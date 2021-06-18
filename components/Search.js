@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { connect } from "react-redux";
 
 import CurrentWeather from './CurrentWeather';
 import ForcastWeatherItem from './ForcastWeatherItem';
@@ -40,6 +41,7 @@ class Search extends React.Component {
 
   _loadWeatherData() {
     if (this.searchText.length > 0) {
+      this._addToHistoric();
       this.setState({isLoading: true});
       getCurrentWeather(this.searchText).then(data => {
         this.setState({
@@ -66,31 +68,31 @@ class Search extends React.Component {
           <ScrollView style={{height: 170}}>
             <View style={[styles.current_info_container, {borderTopWidth: 1}]}>
               <View style={{flex: 2}}>
-                <Text style={{fontSize: 20}}>Max</Text>
+                <Text style={styles.data_name_text}>Max</Text>
                 <Text style={{fontSize: 30}}>{Math.round(this.state.currentWeather.main.temp_max)}°</Text>
               </View>
               <View style={{flex: 2}}>
-                <Text style={{fontSize: 20}}>Min</Text>
+                <Text style={styles.data_name_text}>Min</Text>
                 <Text style={{fontSize: 30}}>{Math.round(this.state.currentWeather.main.temp_min)}°</Text>
               </View>
             </View>
             <View style={styles.current_info_container}>
               <View style={{flex: 2}}>
-                <Text style={{fontSize: 20}}>Sunrise</Text>
+                <Text style={styles.data_name_text}>Sunrise</Text>
                 <Text style={{fontSize: 30}}>{moment(this.state.currentWeather.sys.sunrise*1000).format('LT')}</Text>
               </View>
               <View style={{flex: 2}}>
-                <Text style={{fontSize: 20}}>Sunset</Text>
+                <Text style={styles.data_name_text}>Sunset</Text>
                 <Text style={{fontSize: 30}}>{moment(this.state.currentWeather.sys.sunset*1000).format('LT')}</Text>
               </View>
             </View>
             <View style={styles.current_info_container}>
               <View style={{flex: 2}}>
-                <Text style={{fontSize: 20}}>Humidity</Text>
+                <Text style={styles.data_name_text}>Humidity</Text>
                 <Text style={{fontSize: 30}}>{this.state.currentWeather.main.humidity} %</Text>
               </View>
               <View style={{flex: 2}}>
-                <Text style={{fontSize: 20}}>Pressure</Text>
+                <Text style={styles.data_name_text}>Pressure</Text>
                 <Text style={{fontSize: 30}}>{this.state.currentWeather.main.pressure} hPa</Text>
               </View>
             </View>
@@ -110,12 +112,23 @@ class Search extends React.Component {
     }
   }
 
+  _addToHistoric() {
+    const action = {type: 'ADD_TO_HISTORIC', value: this.searchText};
+    this.props.dispatch(action);
+  }
+
+  componentDidUpdate() {
+    // console.log("componentDidUpdate : ");
+    console.log(this.props.historicResearch);
+  }
+
   _displayForcastDetails = (data) => {
     // console.log(this.state.currentWeather.name);
     this.props.navigation.navigate('Infos', {weatherData: data});
   }
 
   render() {
+    // console.log(this.props);
     return(
       <View style={styles.main_container}>
         <TextInput 
@@ -190,7 +203,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#6A7A87',
     paddingLeft: 5,
+  },
+  data_name_text: {
+    fontSize: 20, 
+    color: '#9A9898',
   }
 });
 
-export default Search;
+const mapStateToProps = (state) => {
+  return {
+    historicResearch: state.historicResearch,
+  };
+}
+
+export default connect(mapStateToProps)(Search);

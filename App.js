@@ -3,11 +3,14 @@ import { Provider } from "react-redux";
 
 import Search from './components/Search';
 import Navigation from "./navigation/Navigation";
+import Store from "./store/configureStore";
 
 class App extends React.Component {
   render() {
     return(
-      <Navigation />
+      <Provider store={Store}>
+        <Navigation />
+      </Provider>
     );
   }
 }
